@@ -71,8 +71,9 @@ let state = [
   //   quantityOnCart: 0,
   // },
 ];
+let total = 0.0;
 
-function addProductsToStore() {
+function renderProducts() {
   for (let product of state) {
     let item = document.createElement("li");
 
@@ -95,9 +96,10 @@ function addProductsToStore() {
     document.querySelector(".store--item-list").appendChild(item);
   }
 }
-function updateQuantityOnCart(product) {
+function incrementQuantityOnCart(product) {
   product.quantityOnCart++;
-  console.log(product.quantityOnCart);
+  total += product.price;
+  document.querySelector(".total-number").textContent = `£${total.toFixed(2)}`;
   return product.quantityOnCart;
 }
 function addProductToCart(product) {
@@ -114,15 +116,22 @@ function addProductToCart(product) {
     let decrementQuantity = document.createElement("button");
     decrementQuantity.className = "quantity-btn remove-btn center";
     decrementQuantity.textContent = "-";
+    decrementQuantity.addEventListener("click", () => {
+      decrementQuantityOnCart(product);
+    });
 
     let cartProductQuantity = document.createElement("span");
     cartProductQuantity.className = "quantity-text center";
-    cartProductQuantity.textContent = updateQuantityOnCart(product);
+    cartProductQuantity.textContent = incrementQuantityOnCart(product);
     product.cartProductQuantityElement = cartProductQuantity;
 
     let incrementQuantity = document.createElement("button");
     incrementQuantity.className = "quantity-btn add-btn center";
     incrementQuantity.textContent = "+";
+    incrementQuantity.addEventListener("click", () => {
+      product.cartProductQuantityElement.textContent =
+        incrementQuantityOnCart(product);
+    });
 
     cartItem.append(
       cartProductImage,
@@ -134,8 +143,18 @@ function addProductToCart(product) {
     document.querySelector(".cart--item-list").appendChild(cartItem);
   } else {
     product.cartProductQuantityElement.textContent =
-      updateQuantityOnCart(product);
+      incrementQuantityOnCart(product);
   }
 }
+function decrementQuantityOnCart(product) {
+  product.quantityOnCart--;
+  total -= product.price;
+  document.querySelector(".total-number").textContent = `£${total.toFixed(2)}`;
+  if (product.quantityOnCart === 0) {
+    product.cartProductQuantityElement.parentNode.remove();
+  }
+  product.cartProductQuantityElement.textContent = product.quantityOnCart;
+  return product.quantityOnCart;
+}
 
-addProductsToStore();
+renderProducts();
