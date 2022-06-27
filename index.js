@@ -9,6 +9,7 @@ This is how an item object should look like
 }
 
 */
+
 let state = [
   {
     id: 01,
@@ -64,12 +65,12 @@ let state = [
     price: 0.35,
     quantityOnCart: 0,
   },
-  // {
-  //   id: 10,
-  //   name: "eggplant",
-  //   price: 1.2,
-  //   quantityOnCart: 0,
-  // },
+  {
+    id: 10,
+    name: "eggplant",
+    price: 1.2,
+    quantityOnCart: 0,
+  },
 ];
 let total = 0.0;
 
@@ -81,7 +82,10 @@ function renderProducts() {
     productImageWrapper.className = "store--item-icon";
 
     let productImage = document.createElement("img");
-    productImage.src = `assets/icons/00${product.id}-${product.name}.svg`;
+    productImage.src =
+      product.id < 10
+        ? `assets/icons/00${product.id}-${product.name}.svg`
+        : `assets/icons/0${product.id}-${product.name}.svg`;
     productImage.alt = product.name;
 
     let addToCartBtn = document.createElement("button");
@@ -107,7 +111,10 @@ function addProductToCart(product) {
     let cartItem = document.createElement("li");
     let cartProductImage = document.createElement("img");
     cartProductImage.className = "cart--item-icon";
-    cartProductImage.src = `assets/icons/00${product.id}-${product.name}.svg`;
+    cartProductImage.src =
+      product.id < 10
+        ? `assets/icons/00${product.id}-${product.name}.svg`
+        : `assets/icons/0${product.id}-${product.name}.svg`;
     cartProductImage.alt = product.name;
 
     let cartProductName = document.createElement("p");
